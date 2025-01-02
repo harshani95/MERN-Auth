@@ -3,7 +3,7 @@
 ### Frontend Technologies
 - React
 - JavaScript
-- Tailind CSS
+- TailWind CSS
 - axios
 - Redux Toolkit
   <br/>
