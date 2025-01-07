@@ -1,7 +1,7 @@
 const userSchema = require('../models/UserSchema');
 const bcrypt = require('bcryptjs');
 
-const signup = async(req, res, next) => {
+const signup = async(req, res) => {
     const {username, email, password} = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new userSchema({username, email, password:hashedPassword});
@@ -11,7 +11,7 @@ const signup = async(req, res, next) => {
     res.status(200).json({message: 'User created successfully'});
  }
  catch(e){
-    next(error);
+   console.log(e);
  }  
 }
 
