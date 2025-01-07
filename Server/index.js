@@ -5,24 +5,27 @@ const cors = require("cors");
 const userRoute = require('./routes/UserRoute');
 const authRoute = require('./routes/AuthRoute');
 
-dotenv.config();
+require('dotenv').config();
 
-mongoose.connect(process.env.MONGODB)
-.then(() => {
-  console.log("Connected to MongoDB");
-})
-.catch((err) => {
-    console.error(err);
-})
-;
-
+const port = process.env.SERVER_PORT | 3000;
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
-});
+
+const startServer = async () => {
+  try {
+      await mongoose.connect('mongodb://127.0.0.1:27017/mernAuth');
+      app.listen(port, () => {
+          console.log(`Server started & running on port ${port}`);
+      });
+  } catch (e) {
+      console.log('Error connecting to MongoDB:', e);
+  }
+};
+
+startServer();
+
 
 app.use('/api/v1/user', userRoute);
 app.use('/api/v1/auth', authRoute);
