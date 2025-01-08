@@ -24,7 +24,7 @@ const signin = async(req, res, next) => {
         if(!validUser)
             return res.next(errorHandler(404, 'User not found'));
 
-        const isPasswordValid = bcrypt.compare(password, validUser.password);
+        const isPasswordValid = bcrypt.compareSync(password, validUser.password);
         if(!isPasswordValid)
             return res.next(errorHandler(401, 'Wrong Credentials'));
 

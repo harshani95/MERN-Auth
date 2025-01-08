@@ -2,10 +2,19 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInFailure,
+  signInStart,
+  signInSuccess,
+} from "../redux/user/userSlice";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
+  const { loading, error } = useSelector((state) => state.user);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -14,14 +23,16 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      dispatch(signInStart());
       const response = await axios.post(
         "http://localhost:3000/api/v1/auth/signin",
         formData
       );
+      dispatch(signInSuccess(response.data));
       console.log(response);
       navigate("/");
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      dispatch(signInFailure(error));
     }
   };
 
@@ -59,6 +70,9 @@ const SignIn = () => {
             </span>
           </Link>
         </div>
+        <p className="text-red-500 mt-5">
+          {error ? "Something went wrong!" : ""}
+        </p>
       </div>
     </>
   );
