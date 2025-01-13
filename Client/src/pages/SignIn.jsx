@@ -48,6 +48,7 @@ const SignIn = () => {
             name="email"
             placeholder="Email"
             className="bg-slate-100 p-3 rounded-lg mb-4"
+            autoComplete="email"
             onChange={handleChange}
           />
           <input
@@ -56,6 +57,7 @@ const SignIn = () => {
             name="password"
             placeholder="Password"
             className="bg-slate-100 p-3 rounded-lg mb-4"
+            autoComplete="current-password"
             onChange={handleChange}
           />
 

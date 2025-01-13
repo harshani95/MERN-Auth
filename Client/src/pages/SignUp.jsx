@@ -38,6 +38,7 @@ const SignUp = () => {
             name="username"
             placeholder="Username"
             className="bg-slate-100 p-3 rounded-lg mb-4"
+            autoComplete="username"
             onChange={handleChange}
           />
           <input
@@ -46,6 +47,7 @@ const SignUp = () => {
             name="email"
             placeholder="Email"
             className="bg-slate-100 p-3 rounded-lg mb-4"
+            autoComplete="email"
             onChange={handleChange}
           />
           <input
@@ -54,6 +56,7 @@ const SignUp = () => {
             name="password"
             placeholder="Password"
             className="bg-slate-100 p-3 rounded-lg mb-4"
+            autoComplete="current-password"
             onChange={handleChange}
           />
           <button className="bg-slate-800 text-white p-3 rounded-lg uppercase font-semibold mb-1 mt-3 hover:bg-slate-700 transition-colors duration-300">

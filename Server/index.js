@@ -26,6 +26,13 @@ const startServer = async () => {
 
 startServer();
 
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your frontend URL
+    credentials: true, // Allow cookies
+  })
+)
+
 
 app.use('/api/v1/user', userRoute);
 app.use('/api/v1/auth', authRoute);
