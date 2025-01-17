@@ -1,4 +1,5 @@
-import jwt from 'jsonwebtoken';
+const jwt = require("jsonwebtoken");
+const errorHandler = require("./error");
 
 const verifyUser = (req, res, next) => {
   const token = req.cookies.access_token;
@@ -17,4 +18,4 @@ const verifyUser = (req, res, next) => {
   })
 }
 
-export default verifyUser;
+module.exports = verifyUser;
