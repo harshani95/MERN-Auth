@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
   signInFailure,
@@ -12,7 +11,7 @@ import OAuth from "../components/OAuth";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const { error } = useSelector((state) => state.user);
+  const { error, loading } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -25,15 +24,23 @@ const SignIn = () => {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      const response = await axios.post(
-        "http://localhost:3000/api/v1/auth/signin",
-        formData
-      );
-      dispatch(signInSuccess(response.data));
-      console.log(response);
+      const response = await fetch("http://localhost:3000/api/v1/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (data.success === false) {
+        dispatch(signInFailure(data));
+        return;
+      }
+      dispatch(signInSuccess(data));
       navigate("/");
     } catch (error) {
       dispatch(signInFailure(error));
+      console.log(error);
     }
   };
 
@@ -62,7 +69,7 @@ const SignIn = () => {
           />
 
           <button className="bg-slate-800 text-white p-3 rounded-lg uppercase font-semibold mb-1 mt-3 hover:bg-slate-700 transition-colors duration-300">
-            Login
+            {loading ? "Loading..." : "Sign In"}
           </button>
           <OAuth />
         </form>

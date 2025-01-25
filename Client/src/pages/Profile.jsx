@@ -10,9 +10,11 @@ import {
   signOut,
 } from "../redux/user/userSlice";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({});
   const [updateSccess, setUpdateSuccess] = useState(false);
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -38,6 +40,7 @@ const Profile = () => {
       const data = await response.json();
       if (data.success === false) {
         dispatch(updateFailure(data.message));
+        console.log(data.message);
         return;
       }
       dispatch(updateSuccess(data.user));
@@ -65,6 +68,7 @@ const Profile = () => {
         return;
       }
       dispatch(deleteSuccess(data));
+      navigate("/signin");
     } catch (error) {
       dispatch(deleteFailure(error.message));
     }
@@ -97,6 +101,7 @@ const Profile = () => {
             placeholder="Username"
             className="bg-slate-100 rounded-lg p-3"
             onChange={handleChange}
+            autoComplete="username"
           />
           <input
             defaultValue={currentUser.email}
@@ -105,6 +110,7 @@ const Profile = () => {
             placeholder="Email"
             className="bg-slate-100 rounded-lg p-3"
             onChange={handleChange}
+            autoComplete="email"
           />
           <input
             type="password"
@@ -112,6 +118,7 @@ const Profile = () => {
             placeholder="Password"
             className="bg-slate-100 rounded-lg p-3"
             onChange={handleChange}
+            autoComplete="current-password"
           />
           <button
             className="bg-slate-700 text-white rounded-lg p-3 mt-5 uppercase hover:bg-slate-800

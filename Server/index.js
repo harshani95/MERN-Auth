@@ -16,6 +16,14 @@ app.use(coookieParser());
 app.use(cors());
 
 
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your frontend URL
+    credentials: true, // Allow cookies
+  })
+)
+
+
 const startServer = async () => {
   try {
       await mongoose.connect('mongodb://127.0.0.1:27017/mernAuth');
@@ -28,13 +36,6 @@ const startServer = async () => {
 };
 
 startServer();
-
-app.use(
-  cors({
-    origin: "http://localhost:5173", // Replace with your frontend URL
-    credentials: true, // Allow cookies
-  })
-)
 
 
 app.use('/api/v1/user', userRoute);

@@ -5,7 +5,7 @@ const errorHandler = require('../utils/error');
 
 const signup = async(req, res) => {
     const {username, email, password} = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hashSync(password, 10);
     const user = new userSchema({username, email, password:hashedPassword});
 
  try{
@@ -24,14 +24,14 @@ const signin = async(req, res, next) => {
         if(!validUser)
             return res.next(errorHandler(404, 'User not found'));
 
-        const isPasswordValid = bcrypt.compareSync(password, validUser.password);
+        const isPasswordValid = await bcrypt.compare(password, validUser.password);
         if(!isPasswordValid)
             return res.next(errorHandler(401, 'Wrong Credentials'));
 
         const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
         const {password:hashedPassword, ...otherDetails} = validUser._doc;
         res
-            .cookie('access_token', token, {httpOnly: true})
+            .cookie('access_token', token, {httpOnly: true, sameSite: 'strict'})
             .status(200)
             .json(otherDetails);
     }
@@ -57,7 +57,7 @@ const googleLogin = async (req, res, next) => {
         const generatedPassword =Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
         const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
         const newUser = new userSchema({
-          username:req.body.name.split(' ').join('').toLowerCase() + Math.random().toString(36).slice(-8),
+          username:req.body.name.split(' ').join('').toLowerCase(),
           email: req.body.email,
           password: hashedPassword,
           profilePicture: req.body.photo,

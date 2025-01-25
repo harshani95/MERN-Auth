@@ -29,7 +29,7 @@ const Header = () => {
                       className="w-10 h-10 rounded-full object-cover"
                     />
                   ) : (
-                    <li>Login</li>
+                    <span>Login</span>
                   )}
                 </Link>
               </li>
